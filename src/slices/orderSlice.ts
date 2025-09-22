@@ -1,17 +1,37 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getIngredientsApi, getOrderByNumberApi } from '@api';
+import {
+  getIngredientsApi,
+  getOrderByNumberApi,
+  getOrdersApi,
+  orderBurgerApi
+} from '@api';
 import { TIngredient, TOrder } from '@utils-types';
 import { RootState } from 'src/services/store';
 
 interface orderState {
-  ingredients: TIngredient[];
+  orders: TOrder[];
+  //для заказов пользователя
+  ordersLoading: boolean;
+  ordersError: string | null;
+  //для создания одного заказа
+  orderRequest: boolean;
+  orderError: string | null;
+  orderModalData: TOrder | null;
+  //для открытия модалки
+  currentOrder: TOrder | null;
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: orderState = {
-  ingredients: [],
+  orders: [],
+  ordersLoading: true,
+  ordersError: null,
+  orderRequest: true,
+  orderError: null,
+  orderModalData: null,
+  currentOrder: null,
   isLoading: true,
   error: null
 };
@@ -20,9 +40,33 @@ export const fetchOrder = createAsyncThunk<
   TOrder,
   number,
   { rejectValue: string }
->('order/getOrder', async (data, { rejectWithValue }) => {
+>('order/fetchOrder', async (data, { rejectWithValue }) => {
   try {
     return (await getOrderByNumberApi(data)).orders[0];
+  } catch (error) {
+    return rejectWithValue((error as Error).message);
+  }
+});
+
+export const fetchOrders = createAsyncThunk<
+  TOrder[],
+  void,
+  { rejectValue: string }
+>('orders/fetchOrders', async (_, { rejectWithValue }) => {
+  try {
+    return await getOrdersApi();
+  } catch (error) {
+    return rejectWithValue((error as Error).message);
+  }
+});
+
+export const orderBurger = createAsyncThunk<
+  { order: TOrder; name: string },
+  string[],
+  { rejectValue: string }
+>('order/orderBurger', async (data, { rejectWithValue }) => {
+  try {
+    return await orderBurgerApi(data);
   } catch (error) {
     return rejectWithValue((error as Error).message);
   }
@@ -44,15 +88,39 @@ const orderSlice = createSlice({
       })
       .addCase(fetchOrder.fulfilled, (state, action) => {
         state.isLoading = false;
-        // state.ingredients = action.payload;
+        state.currentOrder = action.payload;
+      })
+      .addCase(fetchOrders.pending, (state) => {
+        state.ordersLoading = true;
+        state.ordersError = null;
+      })
+      .addCase(fetchOrders.rejected, (state, action) => {
+        state.ordersLoading = false;
+        state.ordersError = action.error.message as string;
+      })
+      .addCase(fetchOrders.fulfilled, (state, action) => {
+        state.ordersLoading = false;
+        state.orders = action.payload;
+      })
+      .addCase(orderBurger.pending, (state) => {
+        state.orderRequest = true;
+        state.orderError = null;
+      })
+      .addCase(orderBurger.rejected, (state, action) => {
+        state.orderRequest = false;
+        state.orderError = action.error.message as string;
+      })
+      .addCase(orderBurger.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.orderModalData = action.payload.order;
       });
   }
 });
 
-export const selectIngredients = (state: RootState) =>
-  state.ingredients.ingredients;
-export const selectIsLoading = (state: RootState) =>
-  state.ingredients.isLoading;
+export const selectOrders = (state: RootState) => state.orders.orders;
+export const selectCurrentOrder = (state: RootState) =>
+  state.orders.currentOrder;
+export const selectIsLoading = (state: RootState) => state.orders.isLoading;
 
 export const {} = orderSlice.actions;
 
