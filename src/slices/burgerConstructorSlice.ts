@@ -7,7 +7,8 @@ type TConstructorState = {
   ingredients: TConstructorIngredient[];
   counter: number;
 };
-export const initialState: TConstructorState = {
+
+const initialState: TConstructorState = {
   bun: null,
   ingredients: [],
   counter: 0

@@ -4,13 +4,13 @@ import { getFeedsApi } from '@api';
 import { TOrder, TOrdersData } from '@utils-types';
 import { RootState } from 'src/services/store';
 
-interface IngredientsListState {
+interface FeedState {
   ordersData: TOrdersData;
   isLoading: boolean;
   error: string | null;
 }
 
-const initialState: IngredientsListState = {
+const initialState: FeedState = {
   ordersData: {
     orders: [],
     total: 0,
@@ -24,7 +24,7 @@ export const fetchFeed = createAsyncThunk<
   TOrdersData,
   void,
   { rejectValue: string }
->('orders/all/fetchAll', async (_, { rejectWithValue }) => {
+>('feed/fetchAll', async (_, { rejectWithValue }) => {
   try {
     return await getFeedsApi();
   } catch (error) {

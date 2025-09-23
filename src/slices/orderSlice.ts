@@ -73,7 +73,7 @@ export const orderBurger = createAsyncThunk<
 });
 
 const orderSlice = createSlice({
-  name: 'order',
+  name: 'orders',
   initialState,
   reducers: {},
   extraReducers: (builder) => {

@@ -3,10 +3,9 @@ import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
-import { fetchOrder, selectCurrentOrder } from '../../slices/orderSlice';
+import { fetchOrder } from '../../slices/orderSlice';
 import { useParams } from 'react-router-dom';
 import { selectIngredients } from '../../slices/ingredientsSlice';
-import { selectFeed, selectIsLoading } from '../../slices/feedSlice';
 
 export const OrderInfo: FC = () => {
   const dispatch = useDispatch();
@@ -26,18 +25,6 @@ export const OrderInfo: FC = () => {
     }
   }, []);
   const ingredients = useSelector(selectIngredients);
-  // const ordersData = useSelector(selectFeed);
-  // const isFeedLoading = useSelector(selectIsLoading);
-  // const orderFromFeed = ordersData.orders.find(
-  //   (i) => i.number === Number(id)
-  // );
-  // useEffect(() => {
-  //   if (!orderFromFeed && id) {
-  //     dispatch(fetchOrder(Number(id)));
-  //   }
-  // }, [id, orderFromFeed, dispatch]);
-  // const orderFromStore = useSelector(selectCurrentOrder);
-  // const orderData = orderFromFeed || orderFromStore;
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
