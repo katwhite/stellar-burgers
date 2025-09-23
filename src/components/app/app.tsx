@@ -49,9 +49,8 @@ const App = () => {
         <AppHeader />
         <Routes location={state?.background || location}>
           <Route path='/' element={<ConstructorPage />} />
-          <Route path='/feed' element={<Feed />}>
-            <Route path=':number' element={<OrderInfo />} />
-          </Route>
+          <Route path='/feed' element={<Feed />} />
+          <Route path='/feed/:number' element={<OrderInfo />} />
           <Route path='/ingredients/:id' element={<IngredientDetails />} />
           <Route
             path='/login'
@@ -72,14 +71,12 @@ const App = () => {
           <Route
             path='/profile'
             element={<ProtectedRoute component={<Profile />} />}
-          >
-            <Route
-              path='orders'
-              element={<ProtectedRoute component={<ProfileOrders />} />}
-            >
-              <Route path=':number' element={<OrderInfo />} />
-            </Route>
-          </Route>
+          />
+          <Route
+            path='/profile/orders'
+            element={<ProtectedRoute component={<ProfileOrders />} />}
+          />
+          <Route path='/profile/orders/:number' element={<OrderInfo />} />
           <Route path='*' element={<NotFound404 />} />
         </Routes>
 

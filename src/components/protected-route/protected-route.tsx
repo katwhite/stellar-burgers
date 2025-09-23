@@ -30,7 +30,5 @@ export const ProtectedRoute = ({
     return <Navigate to={from} />;
   }
 
-  // onlyUnAuth && !user, for unauthorized, and unauthorized
-  // !onlyUnAuth && user, for authorized, and authorized
   return component;
 };

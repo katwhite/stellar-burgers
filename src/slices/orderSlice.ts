@@ -121,6 +121,10 @@ export const selectOrders = (state: RootState) => state.orders.orders;
 export const selectCurrentOrder = (state: RootState) =>
   state.orders.currentOrder;
 export const selectIsLoading = (state: RootState) => state.orders.isLoading;
+export const selectOrderRequest = (state: RootState) =>
+  state.orders.orderRequest;
+export const selectOrderModalData = (state: RootState) =>
+  state.orders.orderModalData;
 
 export const {} = orderSlice.actions;
 
