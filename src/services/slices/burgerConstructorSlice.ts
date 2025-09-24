@@ -45,12 +45,23 @@ const burgerConstructorSlice = createSlice({
       let temp = state.ingredients[action.payload];
       state.ingredients[action.payload] = state.ingredients[action.payload + 1];
       state.ingredients[action.payload + 1] = temp;
+    },
+    clearBurgerConstructor: (state) => {
+      state.bun = null;
+      state.ingredients = [];
+      state.counter = 0;
     }
   }
 });
 
-export const { addBun, addIngredient, removeIngredient, moveUp, moveDown } =
-  burgerConstructorSlice.actions;
+export const {
+  addBun,
+  addIngredient,
+  removeIngredient,
+  moveUp,
+  moveDown,
+  clearBurgerConstructor
+} = burgerConstructorSlice.actions;
 
 export const selectConstructorItems = (state: RootState) =>
   state.burgerConstructor;

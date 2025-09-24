@@ -8,8 +8,8 @@ import {
 import { createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { AppDispatch, RootState } from '../services/store';
-import { setCookie } from '../utils/cookie';
+import { AppDispatch, RootState } from '../store';
+import { setCookie } from '../../utils/cookie';
 
 type UserState = {
   user: TUser | null;

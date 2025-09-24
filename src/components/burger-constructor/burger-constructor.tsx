@@ -1,19 +1,21 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { selectConstructorItems } from '../../slices/burgerConstructorSlice';
+import {
+  clearBurgerConstructor,
+  selectConstructorItems
+} from '../../services/slices/burgerConstructorSlice';
 import { useDispatch, useSelector } from '../../services/store';
 import {
   clearOrderModal,
   orderBurger,
   selectOrderModalData,
   selectOrderRequest
-} from '../../slices/orderSlice';
+} from '../../services/slices/orderSlice';
 import { useNavigate } from 'react-router-dom';
-import { selectUser } from '../../slices/userSlice';
+import { selectUser } from '../../services/slices/userSlice';
 
 export const BurgerConstructor: FC = () => {
-
   const constructorItems = useSelector(selectConstructorItems);
   const dispatch = useDispatch();
 
@@ -38,6 +40,7 @@ export const BurgerConstructor: FC = () => {
 
   const closeOrderModal = () => {
     dispatch(clearOrderModal());
+    dispatch(clearBurgerConstructor());
     navigate('/');
   };
 
