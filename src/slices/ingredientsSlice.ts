@@ -1,9 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getIngredientsApi } from '@api';
 import { TIngredient } from '@utils-types';
 import { RootState } from 'src/services/store';
-import { useParams } from 'react-router-dom';
 
 interface IngredientsListState {
   ingredients: TIngredient[];
@@ -54,7 +53,5 @@ export const selectIngredients = (state: RootState) =>
   state.ingredients.ingredients;
 export const selectIsLoading = (state: RootState) =>
   state.ingredients.isLoading;
-
-export const {} = ingredientsSlice.actions;
 
 export default ingredientsSlice.reducer;

@@ -1,12 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  getIngredientsApi,
-  getOrderByNumberApi,
-  getOrdersApi,
-  orderBurgerApi
-} from '@api';
-import { TIngredient, TOrder } from '@utils-types';
+import { getOrderByNumberApi, getOrdersApi, orderBurgerApi } from '@api';
+import { TOrder } from '@utils-types';
 import { RootState } from 'src/services/store';
 
 interface orderState {
@@ -26,13 +21,13 @@ interface orderState {
 
 const initialState: orderState = {
   orders: [],
-  ordersLoading: true,
+  ordersLoading: false,
   ordersError: null,
-  orderRequest: true,
+  orderRequest: false,
   orderError: null,
   orderModalData: null,
   currentOrder: null,
-  isLoading: true,
+  isLoading: false,
   error: null
 };
 
@@ -75,7 +70,11 @@ export const orderBurger = createAsyncThunk<
 const orderSlice = createSlice({
   name: 'orders',
   initialState,
-  reducers: {},
+  reducers: {
+    clearOrderModal: (state) => {
+      state.orderModalData = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchOrder.pending, (state) => {
@@ -126,6 +125,6 @@ export const selectOrderRequest = (state: RootState) =>
 export const selectOrderModalData = (state: RootState) =>
   state.orders.orderModalData;
 
-export const {} = orderSlice.actions;
+export const { clearOrderModal } = orderSlice.actions;
 
 export default orderSlice.reducer;

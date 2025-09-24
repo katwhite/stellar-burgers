@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getFeedsApi } from '@api';
-import { TOrder, TOrdersData } from '@utils-types';
+import { TOrdersData } from '@utils-types';
 import { RootState } from 'src/services/store';
 
 interface FeedState {
@@ -55,7 +55,5 @@ const feedSlice = createSlice({
 
 export const selectFeed = (state: RootState) => state.feed.ordersData;
 export const selectIsLoading = (state: RootState) => state.feed.isLoading;
-
-export const {} = feedSlice.actions;
 
 export default feedSlice.reducer;

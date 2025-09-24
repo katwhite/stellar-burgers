@@ -1,7 +1,10 @@
-// TODO: авторизация, обновление пароля, забыл пароль,
-// обновить пользователя
-
-import { getUserApi, loginUserApi, logoutApi, registerUserApi } from '@api';
+import {
+  getUserApi,
+  loginUserApi,
+  logoutApi,
+  registerUserApi,
+  updateUserApi
+} from '@api';
 import { createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
@@ -100,6 +103,18 @@ export const registerUser = createAsyncThunk<
   }
 });
 
+export const updateUser = createAsyncThunk<
+  { success: boolean; user: TUser },
+  { email?: string; name?: string; password?: string },
+  { rejectValue: string }
+>('user/updateUser', async (data, { rejectWithValue }) => {
+  try {
+    return await updateUserApi(data);
+  } catch (error) {
+    return rejectWithValue((error as Error).message);
+  }
+});
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -155,6 +170,15 @@ const userSlice = createSlice({
         state.isAuthChecked = true;
       })
       .addCase(registerUser.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.error = action.error.message as string;
+      })
+      .addCase(updateUser.pending, (state) => {
         state.error = null;
       });
   }

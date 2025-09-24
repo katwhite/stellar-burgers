@@ -10,7 +10,6 @@ import {
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
-import { BurgerConstructor } from '@components';
 
 const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
@@ -18,7 +17,7 @@ const rootReducer = combineReducers({
   feed: feedReducer,
   orders: orderReducer,
   user: userReducer
-}); // Заменить на импорт настоящего редьюсера
+});
 
 const store = configureStore({
   reducer: rootReducer,
