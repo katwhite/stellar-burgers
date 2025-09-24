@@ -23,7 +23,6 @@ import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { useEffect } from 'react';
 import { useDispatch } from '../../services/store';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
-import { fetchFeed } from '../../services/slices/feedSlice';
 import { checkUserAuth } from '../../services/slices/userSlice';
 import { ProtectedRoute } from '../protected-route/protected-route';
 
@@ -35,7 +34,6 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchIngredients());
-    dispatch(fetchFeed());
     dispatch(checkUserAuth());
   }, [dispatch]);
 
@@ -80,7 +78,10 @@ const App = () => {
             path='/profile/orders'
             element={<ProtectedRoute component={<ProfileOrders />} />}
           />
-          <Route path='/profile/orders/:number' element={<OrderInfo />} />
+          <Route
+            path='/profile/orders/:number'
+            element={<ProtectedRoute component={<OrderInfo />} />}
+          />
           <Route path='*' element={<NotFound404 />} />
         </Routes>
 
@@ -89,7 +90,7 @@ const App = () => {
             <Route
               path='/feed/:number'
               element={
-                <Modal title={'Детали заказа'} onClose={handleModalClose}>
+                <Modal title={''} onClose={handleModalClose}>
                   <OrderInfo />
                 </Modal>
               }
@@ -113,7 +114,7 @@ const App = () => {
             <Route
               path='/profile/orders/:number'
               element={
-                <Modal title={'Детали заказа'} onClose={handleModalClose}>
+                <Modal title={''} onClose={handleModalClose}>
                   <OrderInfo />
                 </Modal>
               }

@@ -14,7 +14,7 @@ export const Login: FC = () => {
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     dispatch(login({ email, password }));
-    navigate('/');
+    navigate(-1);
   };
 
   return (
