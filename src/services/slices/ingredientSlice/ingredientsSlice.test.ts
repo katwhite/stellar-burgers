@@ -1,6 +1,6 @@
 import ingredientsReducer, {
   fetchIngredients,
-  initialState,
+  initialState
 } from './ingredientsSlice';
 
 const mockIngredients = [
@@ -46,37 +46,35 @@ const mockIngredients = [
 ];
 
 describe('ingredientsSliceTests', () => {
+  it('При вызове экшена Request isLoading меняется на true', () => {
+    const action = { type: fetchIngredients.pending.type };
+    const state = ingredientsReducer(initialState, action);
 
-    it('При вызове экшена Request isLoading меняется на true', () => {
-      const action = { type: fetchIngredients.pending.type };
-      const state = ingredientsReducer(initialState, action);
-      
-      expect(state.isLoading).toBe(true);
-      expect(state.error).toBeNull();
-    });
+    expect(state.isLoading).toBe(true);
+    expect(state.error).toBeNull();
+  });
 
-    it('При вызове экшена Success и передаче в него ингредиентов эти данные записываются в стор и isLoading меняется на false', () => {
-      const action = {
-        type: fetchIngredients.fulfilled.type,
-        payload: mockIngredients
-      };
-      const state = ingredientsReducer(initialState, action);
-      
-      expect(state.isLoading).toBe(false);
-      expect(state.ingredients).toEqual(mockIngredients);
-      expect(state.error).toBeNull();
-    });
+  it('При вызове экшена Success и передаче в него ингредиентов эти данные записываются в стор и isLoading меняется на false', () => {
+    const action = {
+      type: fetchIngredients.fulfilled.type,
+      payload: mockIngredients
+    };
+    const state = ingredientsReducer(initialState, action);
 
-    it('При вызове экшена Failed и передаче в него ошибки она записывается в стор и isLoading меняется на false', () => {
-      const action = {
-        type: fetchIngredients.rejected.type,
-        error: {message: "Error"}
-      };
-      const state = ingredientsReducer(initialState, action);
-      
-      expect(state.isLoading).toBe(false);
-      expect(state.ingredients).toEqual([]);
-      expect(state.error).toBe("Error");
-    });
-  
+    expect(state.isLoading).toBe(false);
+    expect(state.ingredients).toEqual(mockIngredients);
+    expect(state.error).toBeNull();
+  });
+
+  it('При вызове экшена Failed и передаче в него ошибки она записывается в стор и isLoading меняется на false', () => {
+    const action = {
+      type: fetchIngredients.rejected.type,
+      error: { message: 'Error' }
+    };
+    const state = ingredientsReducer(initialState, action);
+
+    expect(state.isLoading).toBe(false);
+    expect(state.ingredients).toEqual([]);
+    expect(state.error).toBe('Error');
+  });
 });
