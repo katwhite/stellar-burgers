@@ -41,13 +41,13 @@ Cypress.Commands.add('getPrice', () => {
     cy.getPrice().should('contain', `${bunPrice * 2}`);
     cy.get('[data-cy=constructor-bun]').contains(`${bun} (верх)`).should('exist');
     cy.get('[data-cy=constructor-bun]').contains(`${bun} (низ)`).should('exist');
-    cy.getIngredientItem().contains(bun).parent().find('.counter').should('contain.text', '2');
+    cy.get('@bunIngredient').parent().find('.counter').should('contain.text', '2');
 
     cy.getIngredientItem().contains(ingredient).as('ingredient');
     cy.get('@ingredient').parent().find('button').click();
     cy.getPrice().should('contain', totalPrice);
     cy.get('[data-cy=constructor-item]').contains(ingredient).should('exist');
-    cy.getIngredientItem().contains(ingredient).parent().find('.counter').should('contain.text', '1');
+    cy.get('@ingredient').parent().find('.counter').should('contain.text', '1');
   });
 
 describe('модальные окна ингредиентов', () => {
