@@ -1,16 +1,11 @@
-import * as api from '@api';
 import ingredientsReducer, {
   fetchIngredients,
-  selectIngredients,
-  selectIsLoading
+  initialState,
 } from './ingredientsSlice';
-import { configureStore } from '@reduxjs/toolkit';
-import { TIngredient } from '@utils-types';
-import { RootState } from '../../store';
 
 const mockIngredients = [
   {
-    _id: '643d69a5c3f7b9001cfa0941',
+    _id: '1',
     name: 'Биокотлета из марсианской Магнолии',
     type: 'main',
     proteins: 420,
@@ -23,7 +18,7 @@ const mockIngredients = [
     image_large: 'https://code.s3.yandex.net/react/code/meat-01-large.png'
   },
   {
-    _id: '643d69a5c3f7b9001cfa093c',
+    _id: '2',
     name: 'Краторная булка N-200i',
     type: 'bun',
     proteins: 80,
@@ -36,7 +31,7 @@ const mockIngredients = [
     image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png'
   },
   {
-    _id: '643d69a5c3f7b9001cfa0945',
+    _id: '3',
     name: 'Соус с шипами Антарианского плоскоходца',
     type: 'sauce',
     proteins: 101,
@@ -51,70 +46,37 @@ const mockIngredients = [
 ];
 
 describe('ingredientsSliceTests', () => {
-  let store: ReturnType<typeof configureStore>;
-  // const dispatch = useDispatch();
 
-  beforeEach(() => {
-    store = configureStore({
-      reducer: { ingredients: ingredientsReducer },
-      preloadedState: {
-        ingredients: {
-          ingredients: [],
-          isLoading: false,
-          error: null
-        }
-      }
+    it('При вызове экшена Request isLoading меняется на true', () => {
+      const action = { type: fetchIngredients.pending.type };
+      const state = ingredientsReducer(initialState, action);
+      
+      expect(state.isLoading).toBe(true);
+      expect(state.error).toBeNull();
     });
-  });
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
 
-  test('Request: при dispatch(fetchIngredients) isLoading становится true', async () => {
-    const slowPromise: Promise<TIngredient[]> = new Promise((resolve) => {
-      setTimeout(() => resolve(mockIngredients), 20);
+    it('При вызове экшена Success и передаче в него ингредиентов эти данные записываются в стор и isLoading меняется на false', () => {
+      const action = {
+        type: fetchIngredients.fulfilled.type,
+        payload: mockIngredients
+      };
+      const state = ingredientsReducer(initialState, action);
+      
+      expect(state.isLoading).toBe(false);
+      expect(state.ingredients).toEqual(mockIngredients);
+      expect(state.error).toBeNull();
     });
-    jest.spyOn(api, 'getIngredientsApi').mockImplementation(() => slowPromise);
 
-    const spy = jest
-      .spyOn(api, 'getIngredientsApi')
-      .mockImplementation(() => slowPromise as any);
-
-    const dispatchPromise = store.dispatch(fetchIngredients());
-    const state: RootState = store.getState();
-
-    expect(selectIsLoading(state)).toBe(true);
-    await dispatchPromise;
-
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(selectIsLoading(state)).toBe(false);
-  });
-
-  test('ингридиенты загрузились, данные записываются и isLoading = false', async () => {
-    const spy = jest
-      .spyOn(api, 'getIngredientsApi')
-      .mockResolvedValue(mockIngredients);
-
-    await dispatch(fetchIngredients());
-
-    const state: RootState = store.getState();
-
-    expect(selectIngredients(state)).toEqual(mockIngredients);
-    expect(selectIsLoading(state)).toBe(false);
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
-
-  test('ошибка загрузки ингредиентов, error записывается и isLoading = false', async () => {
-    const spy = jest
-      .spyOn(api, 'getIngredientsApi')
-      .mockRejectedValue(new Error('Ошибка сети'));
-
-    await dispatch(fetchIngredients());
-
-    const state: RootState = store.getState();
-
-    expect(state.ingredients.error).toBe('Ошибка сети');
-    expect(selectIsLoading(state)).toBe(false);
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
+    it('При вызове экшена Failed и передаче в него ошибки она записывается в стор и isLoading меняется на false', () => {
+      const action = {
+        type: fetchIngredients.rejected.type,
+        error: {message: "Error"}
+      };
+      const state = ingredientsReducer(initialState, action);
+      
+      expect(state.isLoading).toBe(false);
+      expect(state.ingredients).toEqual([]);
+      expect(state.error).toBe("Error");
+    });
+  
 });
