@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getOrderByNumberApi, getOrdersApi, orderBurgerApi } from '@api';
 import { TOrder } from '@utils-types';
-import { RootState } from '../../services/store';
+import { RootState } from '../../store';
 
 interface orderState {
   orders: TOrder[];
@@ -19,7 +19,7 @@ interface orderState {
   error: string | null;
 }
 
-const initialState: orderState = {
+export const initialState: orderState = {
   orders: [],
   ordersLoading: false,
   ordersError: null,

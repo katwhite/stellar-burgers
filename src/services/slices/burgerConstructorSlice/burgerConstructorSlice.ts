@@ -1,14 +1,14 @@
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'src/services/store';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
-import { orderBurger } from './orderSlice';
+import { orderBurger } from '../orderSlice/orderSlice';
 
 type TConstructorState = {
   bun: TIngredient | null;
   ingredients: TConstructorIngredient[];
 };
 
-const initialState: TConstructorState = {
+export const initialState: TConstructorState = {
   bun: null,
   ingredients: []
 };
