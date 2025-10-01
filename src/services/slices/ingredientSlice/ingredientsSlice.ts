@@ -10,7 +10,7 @@ interface IngredientsListState {
   error: string | null;
 }
 
-const initialState: IngredientsListState = {
+export const initialState: IngredientsListState = {
   ingredients: [],
   isLoading: true,
   error: null
