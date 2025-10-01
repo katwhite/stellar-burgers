@@ -44,7 +44,7 @@ describe('модальные окна ингредиентов', () => {
     const bun = "Краторная булка N-200i";
     cy.get('[data-cy=ingredient-item]').contains(bun).click();
     cy.get('[data-cy=modal]').should('exist');
-    cy.get('[data-cy=modal]').contains('Детали ингридиента');
+    cy.get('[data-cy=modal]').contains(bun);
     cy.contains(bun).should('exist');
   });
 
